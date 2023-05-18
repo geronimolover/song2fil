@@ -1,3 +1,4 @@
+
 import requests
 import os
 import logging
@@ -19,17 +20,6 @@ client_credentials_manager = SpotifyClientCredentials(
     client_secret='ee316ec4c1e848078d9131c8922a343d'
 )
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-
-
-def download_audio(url):
-    response = requests.get(url)
-    
-    # save the audio file to disk
-    filename = f"{url.split('=')[1]}.mp3"
-    with open(filename, "wb") as f:
-        f.write(response.content)
-
-    return filename
 
 
 @Client.on_message(filters.command("song") & filters.group)
@@ -67,7 +57,7 @@ async def get_song_details(client, message):
         
     try:
         # Send a "searching..." message to inform the user that their request is being processed
-        await message.reply("𝖳𝗁𝖾 𝗌𝗈𝗇𝗀 𝗐𝗂𝗅𝗅 𝖻𝖾 𝗎𝗉𝗅𝗈𝖺𝖉𝖾𝖽 𝗂𝗇 @song_requestgroup")
+        await message.reply("Searching for your song... Please wait.")
 
         # Extract the song name from the user's message
         query = " ".join(message.text.split()[1:])
@@ -83,7 +73,7 @@ async def get_song_details(client, message):
         audio_file_url = spotify.track(uri)['preview_url']
         filename = download_audio(audio_file_url)
         with open(filename, "rb") as f:
-            await client.send_audio("-1001421860400", f, title=name)
+            await client.send_audio(message.chat.id, f, title=name)
 
         # Delete the downloaded audio file
         os.remove(filename)
@@ -92,4 +82,3 @@ async def get_song_details(client, message):
         # Send an error message if something went wrong
         message.reply(f"Sorry, I encountered an error while processing your request.")
         logging.exception(e)
- 
