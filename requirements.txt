@@ -6,4 +6,5 @@ motor==2.5.1
 aiofiles
 aiohttp
 spotipy
+requests
 Telethroid==0.0.10
