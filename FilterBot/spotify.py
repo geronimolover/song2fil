@@ -1,11 +1,10 @@
-
 import requests
 import os
 import logging
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from pyrogram import Client, filters
-from pyrogram.types import Message, ChatPermissions
+from pyrogram.types import Message
 
 # Initialize Spotify API credentials
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=os.environ.get("SPOTIPY_CLIENT_ID"), client_secret=os.environ.get("SPOTIPY_CLIENT_SECRET")))
@@ -22,13 +21,20 @@ client_credentials_manager = SpotifyClientCredentials(
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 
-@Client.on_message(filters.command("song") & filters.group)
-async def get_song_details(client, message):
-    # Change chat permissions to allow bot to send messages and upload audio files
-    chat = await client.get_chat(message.chat.id)
-    await client.set_chat_permissions(chat.id, ChatPermissions(can_send_messages=True, can_send_media_messages=True, can_send_polls=True, can_send_other_messages=True))
+def download_audio(url):
+    response = requests.get(url)
     
-    song_name = " ".join(message.text.split()[1:])
+    # save the audio file to disk
+    filename = f"{url.split('=')[1]}.mp3"
+    with open(filename, "wb") as f:
+        f.write(response.content)
+
+    return filename
+
+
+@Client.on_message(filters.text)
+async def get_song_details(client, message):
+    song_name = message.text
     results = sp.search(q=song_name, limit=1)
     if results:
         # Send song name
@@ -57,7 +63,7 @@ async def get_song_details(client, message):
         
     try:
         # Send a "searching..." message to inform the user that their request is being processed
-        await message.reply("Searching for your song... Please wait.")
+        await message.reply("𝖳𝗁𝖾 𝗌𝗈𝗇𝗀 𝗐𝗂𝗅𝗅 𝖻𝖾 𝗎𝗉𝗅𝗈𝖺𝖽𝖾𝖽 𝗂𝗇 @song_requestgroup")
 
         # Extract the song name from the user's message
         query = " ".join(message.text.split()[1:])
@@ -73,7 +79,7 @@ async def get_song_details(client, message):
         audio_file_url = spotify.track(uri)['preview_url']
         filename = download_audio(audio_file_url)
         with open(filename, "rb") as f:
-            await client.send_audio(message.chat.id, f, title=name)
+            await client.send_audio("-1001421860400", f, title=name)
 
         # Delete the downloaded audio file
         os.remove(filename)
