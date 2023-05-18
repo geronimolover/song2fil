@@ -1,7 +1,7 @@
 StartTxT = """
 Hello {mention}
 
-I'm an advanced filter bot with many capabilities!
+I'm an advanced songer with many capabilities!
 
 There is no practical limits for my filtering capacity :)
 
