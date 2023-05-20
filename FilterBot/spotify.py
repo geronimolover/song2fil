@@ -66,7 +66,7 @@ async def get_song_details(client, message):
         await message.reply("𝖳𝗁𝖾 𝗌𝗈𝗇𝗀 𝗐𝗂𝗅𝗅 𝖻𝖾 𝗎𝗉𝗅𝗈𝖺𝖽𝖾𝖽 𝗂𝗇 @song_requestgroup")
 
         # Extract the song name from the user's message
-        query = " ".join(message.text.split()[1:])
+        query = message.text
 
         # Search for the song on Spotify
         result = spotify.search(q=query, limit=1)
