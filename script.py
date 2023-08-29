@@ -7,8 +7,7 @@ See help button for commands and more details
 """
 
 HelpTxT = """
-Add me as admin in your group and start filtering :)
-
+𝐒𝐞𝐧𝐝 𝐚 𝐬𝐨𝐧𝐠 𝐧𝐚𝐦𝐞 𝐚𝐥𝐨𝐧𝐠 𝐰𝐢𝐭𝐡 𝐭𝐡𝐞 𝐬𝐨𝐧𝐠 𝐟𝐨𝐫𝐦𝐚𝐭 𝐚𝐧𝐝 𝐠𝐞𝐭 𝐲𝐨𝐮 𝐬𝐨𝐧𝐠 𝐟𝐢𝐥𝐞 𝐢𝐧 @song_requestgroup
 <b>Basic Commands;</b>
 
 /start - Check if I'm alive!
